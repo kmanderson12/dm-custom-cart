@@ -1,0 +1,50 @@
+<!-- Monthly and Annual Checkboxes -->
+{% for option in items[0].options %} {% if option.class == "plan_terms" and
+option.value == "MONTHLY" %}
+<div class="fc-form-group">
+  <div
+    class="fc-checkout__additional-field--tos"
+    data-fc-error-for="monthly_agreement"
+    data-fc-error-class="fc-alert-container--error"
+  >
+    <div class="fc-input-group-container fc-input-group-container--checkbox">
+      <label class="fc-input-group-container__title fc-form-label">
+        <input type="hidden" name="monthly_agreement" value="false" />
+        <input
+          type="checkbox"
+          required
+          id="monthly_agreement"
+          name="monthly_agreement"
+          value="true"
+          class="fc-form-control"
+        />
+        I agree to be billed automatically each month until I request to cancel.
+      </label>
+    </div>
+  </div>
+</div>
+{% endif %} {% if option.class == "plan_terms" and option.value == "ANNUAL" %}
+<div class="fc-form-group">
+  <div
+    class="fc-checkout__additional-field--tos"
+    data-fc-error-for="annual_agreement"
+    data-fc-error-class="fc-alert-container--error"
+  >
+    <div class="fc-input-group-container fc-input-group-container--checkbox">
+      <label class="fc-input-group-container__title fc-form-label">
+        <input type="hidden" name="annual_agreement" value="false" />
+        <input
+          type="checkbox"
+          required
+          id="annual_agreement"
+          name="annual_agreement"
+          value="true"
+          class="fc-form-control"
+        />
+        I agree to an annual commitment of 12 months of Digital Monthly
+        services, billed automatically each month for the next 12 months.
+      </label>
+    </div>
+  </div>
+</div>
+{% endif %} {% endfor %}
