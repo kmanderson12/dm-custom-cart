@@ -101,14 +101,28 @@ document.addEventListener('alpine:init', () => {
         document.querySelectorAll(`.add-on_heading-for-${parentCode}`)
       );
 
-      addOns.map((item) => {
+      addOns.forEach((item) => {
         parentExists
           ? (item.style.display = 'flex')
           : (item.style.display = 'none');
       });
 
-      addOnHeading.map((item) => {
+      addOnHeading.forEach((item) => {
         parentExists ? (item.style.opacity = '1') : (item.style.opacity = '0');
+      });
+    },
+    clearAddOns() {
+      let addOns = Array.from(document.querySelectorAll(`.plan-add-on_option`));
+      let addOnHeading = Array.from(
+        document.querySelectorAll(`.plan-add-on_heading`)
+      );
+
+      addOns.forEach((item) => {
+        item.style.display = 'none';
+      });
+
+      addOnHeading.forEach((item) => {
+        item.style.opacity = '0';
       });
     },
     toggleOtherAddOns() {
@@ -291,6 +305,9 @@ document.addEventListener('alpine:init', () => {
       // clear all options
       let selectedOptions = document.querySelectorAll('.option-selected');
       selectedOptions.forEach((el) => el.classList.remove('option-selected'));
+
+      this.clearAddOns();
+      this.toggleOtherAddOns();
 
       // update total and url
       this.setTotal();
