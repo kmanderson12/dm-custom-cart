@@ -8,7 +8,7 @@
         "properties": true,
         "dead_code": true,
         "drop_debugger": true,
-        "unsafe": false,
+        "unsafe": true,
         "unsafe_comps": false,
         "conditionals": true,
         "comparisons": true,
@@ -29,7 +29,7 @@
         "pure_funcs": null,
         "negate_iife": false,
         "drop_console": false,
-        "passes": 1,
+        "passes": 4,
         "global_defs": {}
     },
     "output": {
