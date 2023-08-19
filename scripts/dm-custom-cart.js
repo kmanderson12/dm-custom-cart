@@ -333,7 +333,11 @@ document.addEventListener('alpine:init', () => {
 
       foxyURL.searchParams.append('name', planName);
       foxyURL.searchParams.append('code', currentPlan.code);
-      foxyURL.searchParams.append('sub_frequency', '1m');
+
+      // Only set as recurring if Annual subscription
+      if (planCommitment === PLAN_COMMITMENT.ANNUAL) {
+        foxyURL.searchParams.append('sub_frequency', '1m');
+      }
       foxyURL.searchParams.append(
         'price',
         planCommitment === PLAN_COMMITMENT.ANNUAL
