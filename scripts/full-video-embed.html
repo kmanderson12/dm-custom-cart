@@ -1,0 +1,120 @@
+<iframe
+  id="WorkVideoPlayer"
+  class="video-full_iframe"
+  src='{{wf {"path":"featured-video-url","type":"Link"\} }}?controls=0'
+  width="100%"
+  height="100%"
+  frameborder="0"
+  allow="autoplay; fullscreen"
+  allowfullscreen
+></iframe>
+<style>
+  #WorkVideoPlayer {
+    height: calc(100vw / 1.77777778);
+  }
+</style>
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // TODO: Create 'switcher' row of thumbnails.
+    // 3 thumbnails with text. onClick -> replace the 'active' video area with clicked item's data
+    // The 'active' item bg image and text goes to the clicked item's spot
+    // On the thumbnails: a popover that says 'Watch this reel'
+    // All state resets
+
+    // TODO: Refactor to use jQuery
+    let isPlaying = false;
+    const iframe = $('#WorkVideoPlayer');
+    let overlay = $('.video-full_overlay');
+    let videoRowItems = $('.video-row_item');
+    let playBtn = $('#WorkVideoPlayBtn');
+    let player = new Vimeo.Player(iframe, { autopause: false });
+
+    console.log(videoRowItems);
+
+    player.setVolume(0.25);
+
+    // TODO: Maybe there's a way to set an id for each, have a reference object,
+    // and just pull all the data from that? Instead of passing everything back and forth
+    function handleSwitchVideo(e, videoItem) {
+      // From overlay and clicked element:
+      // Get video-url, client-name, client-location, bg-image (from bg property)
+
+      const overlayData = Object.assign(overlay.data());
+      overlayData.backgroundImageValue = overlay.css('background-image');
+      // TODO: Get title element and location element for overlay
+      // video-full_client-name
+      const overlayTitle = overlay.find('.video-full_client-name');
+      // video-full_client-location
+      const overlayLocation = overlay.find('.video-full_client-location');
+
+      const clickedElement = $(e.target);
+      console.log('clicked!');
+      console.log({ clickedElement, videoItem });
+      // TODO: Get title element and location element for videoItem
+      // video-row_item-client-name
+
+      // TODO: Fix the way we get this... it's not an ancestor.. it's a... cousin?
+      const videoItemTitle = videoItem.find('.video-row_item-client-name');
+      // video-row_item-client-location
+      const videoItemLocation = videoItem.find(
+        '.video-row_item-client-location'
+      );
+
+      const videoItemData = Object.assign(videoItem.data());
+      videoItemData.backgroundImageValue = videoItem.css('background-image');
+
+      console.log({ overlayData, videoItemData });
+      console.log({
+        overlayTitle,
+        overlayLocation,
+        videoItemTitle,
+        videoItemLocation,
+      });
+      console.log(videoItemTitle.text());
+      console.log(videoItemLocation.text());
+      // set overlay items = clicked items (bg image, title element textContent, location element text, dataset)
+      // set video src = videoItemData.videlUrl;`
+      overlay.css('background-image', videoItemData.backgroundImageValue);
+      console.log('set overlayTitle to ', videoItemData.clientName);
+      overlayTitle.text(videoItemData.clientName);
+      console.log('set overlayLocation to ', videoItemData.clientLocation);
+      overlayLocation.text(videoItemData.clientLocation);
+      // set clicked items = overlay items
+      videoItem.css('background-image', overlayData.backgroundImageValue);
+      console.log('set videoItemTitle to ', overlayData.clientName);
+      videoItemTitle.text(overlayData.clientName);
+      console.log('set videoItemLocation to ', overlayData.clientLocation);
+      videoItemLocation.text(overlayData.clientLocation);
+
+      overlay.data({ ...videoItemData });
+      videoItem.data({ ...overlayData });
+    }
+
+    player.on('play', function () {
+      console.log('Played the video');
+    });
+
+    player.getVideoTitle().then(function (title) {
+      console.log('title:', title);
+    });
+
+    overlay.on('click', function () {
+      if (isPlaying) {
+        overlay.css('opacity', 1);
+        player.pause();
+        isPlaying = false;
+      } else {
+        overlay.css('opacity', 0);
+        player.play();
+        isPlaying = true;
+      }
+    });
+
+    videoRowItems.map((index, element) => {
+      let videoItem = $(element);
+      videoItem.click((event) => handleSwitchVideo(event, videoItem));
+    });
+    // videoRowItems.on('click', (event) => handleSwitchVideo(event, $(this)));
+  });
+</script>
