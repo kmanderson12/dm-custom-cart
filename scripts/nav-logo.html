@@ -1,0 +1,34 @@
+<script>
+  window.onload = function () {
+    const fullLogo = document.getElementById('FullLogo');
+    const smallLogo = document.getElementById('SmallLogo');
+    const hero = document.getElementById('Hero');
+    const header = document.getElementsByClassName(
+      'header-secondary-img_title'
+    )[0];
+    const doc = document.documentElement;
+
+    document.addEventListener('scroll', function () {
+      // only run on desktop
+      if (window.matchMedia('(min-width: 992px)').matches) {
+        let top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+        let elTop = hero?.offsetTop || header?.offsetTop;
+        if (elTop <= top) {
+          // fade fullLogo
+          fullLogo.style.setProperty('opacity', '0');
+          fullLogo.style.setProperty('display', 'none');
+          smallLogo.style.setProperty('opacity', '1');
+          smallLogo.style.setProperty('display', 'block');
+          // fade in smallLogo
+        } else {
+          // fade in fullLogo
+          // fade out smallLogo
+          smallLogo.style.setProperty('opacity', '0');
+          smallLogo.style.setProperty('display', 'none');
+          fullLogo.style.setProperty('opacity', '1');
+          fullLogo.style.setProperty('display', 'block');
+        }
+      }
+    });
+  };
+</script>
