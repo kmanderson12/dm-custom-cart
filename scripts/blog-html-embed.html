@@ -1,0 +1,86 @@
+<script
+  type="text/javascript"
+  src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"
+></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    function setArrowPosition() {
+      let slickCurrent = $('.my-slider').find('.slick-current');
+      let arrows = $('.slick-slider--arrows');
+      let bg = $('.slick-current-bg');
+      let section = $('#Blog');
+      let title = $('.slick-slider_slide--title');
+
+      let left = slickCurrent.offset().left;
+      let slickCurrentTop = slickCurrent.offset().top;
+      let sectionTop = section.offset().top;
+
+      let bgPosition = window.matchMedia('(max-width: 479px)').matches
+        ? { top: slickCurrentTop - sectionTop - 10, left: left + 22 }
+        : { top: slickCurrentTop - sectionTop - 15, left: left + 18 };
+
+      arrows.css({ left: left - 13 });
+      if (window.matchMedia('(min-width: 991px)').matches) {
+        title.css({ marginLeft: `${left + 33}px` });
+      } else {
+        title.css({ marginLeft: '0' });
+      }
+      bg.css({ left: bgPosition.left, top: bgPosition.top });
+    }
+    $('.my-slider').on(
+      'setPosition',
+      function (event, slick, currentSlide, nextSlide) {
+        setArrowPosition();
+      }
+    );
+    $('.my-slider').slick({
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 991,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+      variableWidth: true,
+      centerMode: true,
+      centerPadding: '20%',
+      focusOnSelect: true,
+      prevArrow: $('.slick-slider--arrow-left'),
+      nextArrow: $('.slick-slider--arrow-right'),
+      asNavFor: $('.title-slider'),
+    });
+
+    $('.title-slider').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      fade: true,
+      swipe: false,
+    });
+    setArrowPosition();
+  });
+</script>
+
+<style>
+  @media screen and (min-width: 992px) {
+    .my-slider > .slick-list > .slick-track {
+      margin-left: -40%;
+    }
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    .my-slider > .slick-list > .slick-track {
+      margin-left: -20%;
+    }
+  }
+
+  .slick-current > .slick-slider_slide--content {
+    filter: none;
+  }
+</style>
